@@ -27,7 +27,7 @@ exports.obtenerAllnoticias = async (req, res) => {
 exports.crearNoticia = async (req,res) => {
   const obj=req.body;
   const response = await noticia.create(obj);
-  if (response === true) {
+  if (response != null) {
     res.status(200).json({
       statusCode:200,
       data:null,
