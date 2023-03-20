@@ -3,26 +3,43 @@ const noticia = db.noticia;
 
 /// Funcion para retornar todos las noticias
 
-exports.obtenerAllnoticias = async () => {
+
+exports.obtenerAllnoticias = async (req, res) => {
   const response = await noticia.findAll();
-  if (response !== null) {
-    return response;
+  if (response !== null && response.length) {
+    res.status(200).json({
+      statusCode: 200,
+      data: response,
+      message: "Noticias listadas exitosamente",
+      error: null,
+    });
   } else {
-    return null;
+    res.status(500).json({
+      statusCode: 500,
+      data: null,
+      message: null,
+      error: "No se encontraron noticias",
+    });
   }
 };
 
-exports.crearNoticia = async (objnoticia) => {
-  const response = await noticia.create({
-    titulo: objnoticia.titulo,
-    autor: objnoticia.autor,
-    fecha: objnoticia.fecha,
-    descripcion: objnoticia.descripcion,
-  });
 
-  if (response !== null) {
-    return true;
+exports.crearNoticia = async (req,res) => {
+  const obj=req.body;
+  const response = await noticia.create(obj);
+  if (response === true) {
+    res.status(200).json({
+      statusCode:200,
+      data:null,
+      message:"Noticia Creada",
+      error: null,
+    });    
   } else {
-    return false;
-  }
+    res.status(500).json({
+      statusCode:500,
+      data:null,
+      message:null,
+      error: "Ocurrio error creando Noticia",
+  })
+}
 };
